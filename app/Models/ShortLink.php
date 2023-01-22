@@ -21,6 +21,16 @@ class ShortLink extends Model
         'destination', 'slug'
     ];
 
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
      /**
      * Get the user that owns the url.
      */
