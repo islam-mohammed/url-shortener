@@ -19,6 +19,7 @@ class ShortLinkRequest extends FormRequest
          return [
             'destination' => ['required', 'url', 'max:255', Rule::unique(ShortLink::class)->ignore($this->user()->id)],
             'slug' => ['required', 'string', 'min:5', 'max:5'],
+            'user_id' => ['required']
         ];
     }
 }
