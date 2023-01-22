@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('short_links', function (Blueprint $table) {
             $table->id();
-            $table->string('destination');
-            $table->string('slug');
+            $table->string('destination')->index('destination_index');
+            $table->string('slug', 5)->unique();
             $table->unsignedBigInteger('views');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
