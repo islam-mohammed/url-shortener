@@ -24,7 +24,7 @@ class ShortLinkController extends Controller
                 Auth::user()->shortLinks()
                             ->orderBy('destination')
                             ->paginate()
-                            ->appends(Request::all()))
+                            ->appends(request()->all()))
         ]);
     }
 }
