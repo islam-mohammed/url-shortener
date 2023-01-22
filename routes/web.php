@@ -37,4 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
 require __DIR__.'/auth.php';
+
+Route::get('/{shortlink}', [ShortLinkController::class, 'view'])->name('shortlink.view'); // redirect to the destination of specific slug
