@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('short_links', function (Blueprint $table) {
             $table->id();
             $table->string('destination')->index('destination_index');
-            $table->string('slug', 5)->unique();
+            $table->string('slug', 5);
             $table->unsignedBigInteger('views');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->unique(['user_id', 'slug']);
         });
     }
 
