@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class ShortLink extends Model
 {
@@ -33,9 +34,21 @@ class ShortLink extends Model
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    protected function shortLink(): Attribute {
+    public function shortLink(): Attribute {
         return Attribute::make(
             get: fn () => url(''). '/' . $this->attributes['slug']
         );
+    }
+
+    /**
+     * Generate the slug on model creation.
+     *
+     */
+     protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($shortLink) {
+            $shortLink->slug = Str::random(5);
+        });
     }
 }
