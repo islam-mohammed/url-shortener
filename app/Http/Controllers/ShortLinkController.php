@@ -3,24 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShortLinkRequest;
+use App\Http\Resources\ShortLinksCollection;
+use App\Models\ShortLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-
+use Inertia\Inertia;
 class ShortLinkController extends Controller
+
 {
+
     /**
-     * create new short link.
-     */
-    public function store(ShortLinkRequest $request)
-    {
-        $request->user()->shor
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
+     * Return the user list of short links.
+     *
+     **/
+    public function index() {
+        // $shortLinks = ShortLink::where('user_id', Auth::id())->paginate(20);
+        return Inertia::render('ShortLinks', [
+            'shortLinks' => new ShortLinksCollection(
+                Auth::user()->shortLinks()
+                            ->orderBy('destination')
+                            ->paginate()
+                            ->appends(Request::all()))
+        ]);
     }
 }
