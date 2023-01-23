@@ -18,7 +18,7 @@ class ShortLink extends Model
      * @var array
      */
     protected $fillable  = [
-        'destination', 'slug'
+        'destination', 'slug', 'user_id'
     ];
 
     /**
