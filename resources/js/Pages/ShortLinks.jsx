@@ -66,7 +66,9 @@ export default function ShortLinks({ shortLinks, auth, destination }) {
                                     required
                                 />
                                 <InputError
-                                    message={errors.destination}
+                                    message={
+                                        errors.destination || errors.user_id
+                                    }
                                     className="mt-2"
                                 />
                             </div>
