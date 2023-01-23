@@ -33,4 +33,49 @@ class ShortLinkTest extends TestCase
         $response = $this->get('/short');
         $response->assertStatus(200);
     }
+
+
+    public function test_require_a_destination(): void {
+        $this->withExceptionHandling();
+        $user = User::factory()->create();
+        $response = $this
+        ->actingAs($user)
+        ->post('/short', [
+            "destination" => "",
+            "user_id" => $user->getKey()
+        ]);
+        $response->assertSessionHasErrors('destination');
+    }
+
+    public function test_require_a_valid_destination(): void {
+        $this->withExceptionHandling();
+        $user = User::factory()->create();
+        $response = $this
+        ->actingAs($user)
+        ->post('/short', [
+            "destination" => "AAAA",
+            "user_id" => $user->getKey()
+        ]);
+        $response->assertSessionHasErrors('destination');
+    }
+    public function test_require_a_user(): void {
+        $this->withExceptionHandling();
+        $user = User::factory()->create();
+        $response = $this
+        ->actingAs($user)
+        ->post('/short', [
+            "destination" => "http://example.com",
+            "user_id" => ''
+        ]);
+        $response->assertSessionHasErrors('user_id');
+    }
+
+    public function test_slug_is_generated_on_creating_a_new_short_link(): void {
+        $user = User::factory()->create();
+        $shortLink = ShortLink::factory()->state([
+            "user_id" => $user->getKey()
+        ])->create();
+
+        $this->assertNotNull($shortLink->slug);
+    }
 }
