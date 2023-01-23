@@ -24,11 +24,15 @@
 This project is a simple Laravel 9 application. Laravel 9.x requires a minimum PHP version of 8.0. make sure this version is installed.
 
 ```sh
+
 # Copy the example .env file
 cp .env.example .env
 
 # Copy the example .env.test file
-cp .env.example .env.test
+cp .env.example .env.testing
+
+# Generate application key
+php artisan key:generate
 
 # Install composer dependencies
 composer install
@@ -37,13 +41,10 @@ composer install
 npm install
 
 # Run all migrations and seed the DB for local environment
-php artisan migrate:fresh --seed
+php artisan migrate --seed
 
 # Run all migrations for test environment
-php artisan migrate:fresh --env=testing
-
-# Generate application key
-php artisan key:generate
+php artisan migrate --env=testing
 
 # Build front end assets (CSS, JS)
 npm run dev
