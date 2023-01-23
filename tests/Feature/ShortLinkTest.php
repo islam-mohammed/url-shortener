@@ -78,4 +78,24 @@ class ShortLinkTest extends TestCase
 
         $this->assertNotNull($shortLink->slug);
     }
+
+    public function test_views_should_increment_by_one_when_the_short_link_is_visited(): void {
+        // create new user
+        $user = User::factory()->create();
+
+        // create short link for the user
+        $shortLink = ShortLink::factory()->state([
+            "user_id" => $user->getKey()
+        ])->create();
+
+        // simulate visiting the short link
+        $this->get($shortLink->shortLink);
+
+        // pull the latest short link data from the database
+        $shortLink->refresh();
+
+        // assert that the number of views has been increased by 1
+        $this->assertEquals($shortLink->views, 1);
+
+    }
 }
