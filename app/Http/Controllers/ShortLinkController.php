@@ -51,4 +51,17 @@ class ShortLinkController extends Controller
         return false;
 
     }
+
+        /**
+     * Store a new user short link.
+     *
+     * @param  App\Http\Requests\ShortLinkRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ShortLinkRequest $request)
+    {
+        ShortLink::create($request->all());
+        return to_route('shortlink.index');
+
+    }
 }
