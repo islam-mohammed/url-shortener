@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('destination')->index('destination_index');
             $table->string('slug', 5);
-            $table->unsignedBigInteger('views');
+            $table->unsignedBigInteger('views')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
