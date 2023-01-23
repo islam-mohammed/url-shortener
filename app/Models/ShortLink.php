@@ -51,6 +51,18 @@ class ShortLink extends Model
     }
 
     /**
+     * Get a humans readable date.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function lastUpdate(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->updated_at->diffForHumans()
+        );
+    }
+
+
+    /**
      * Generate the slug on model creation.
      *
      */

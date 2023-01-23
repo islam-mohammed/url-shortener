@@ -83,10 +83,15 @@ export default function ShortLinks({ shortLinks, auth, destination }) {
                             <table className="w-full whitespace-nowrap">
                                 <thead>
                                     <tr className="font-bold text-left">
-                                        <th className="px-6 pt-5 pb-4">Id</th>
                                         <th className="px-6 pt-5 pb-4">Link</th>
                                         <th className="px-6 pt-5 pb-4">
                                             Short Link
+                                        </th>
+                                        <th className="px-6 pt-5 pb-4">
+                                            Visits
+                                        </th>
+                                        <th className="px-6 pt-5 pb-4">
+                                            Last Visit
                                         </th>
                                     </tr>
                                 </thead>
@@ -97,6 +102,8 @@ export default function ShortLinks({ shortLinks, auth, destination }) {
                                             destination,
                                             shortLink,
                                             slug,
+                                            views,
+                                            lastUpdate,
                                         }) => {
                                             return (
                                                 <tr
@@ -104,34 +111,40 @@ export default function ShortLinks({ shortLinks, auth, destination }) {
                                                     className="hover:bg-gray-100 focus-within:bg-gray-100"
                                                 >
                                                     <td className="border-t px-3 pt-2 pb-2">
-                                                        {id}
-                                                    </td>
-                                                    <td className="border-t px-3 pt-2 pb-2">
                                                         {destination}
                                                     </td>
                                                     <td className="border-t px-3 pt-2 pb-2">
-                                                        <NavLink
-                                                            href={route(
-                                                                "shortlink.view",
-                                                                slug
-                                                            )}
-                                                            className="flex items-center px-6 py-4 focus:text-indigo-500"
-                                                        >
-                                                            {shortLink}
-                                                        </NavLink>
+                                                        <div className="flex justify-between">
+                                                            <NavLink
+                                                                href={route(
+                                                                    "shortlink.view",
+                                                                    slug
+                                                                )}
+                                                                className="flex items-center px-6 py-4 focus:text-indigo-500"
+                                                            >
+                                                                {shortLink}
+                                                            </NavLink>
+                                                            <span>|</span>
+                                                            <button
+                                                                type="button"
+                                                                className="text-sm"
+                                                                onClick={async () => {
+                                                                    await copyToClipboard(
+                                                                        shortLink
+                                                                    );
+                                                                }}
+                                                            >
+                                                                Copy
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                     <td className="border-t px-3 pt-2 pb-2">
-                                                        <button
-                                                            type="button"
-                                                            className="text-sm"
-                                                            onClick={async () => {
-                                                                await copyToClipboard(
-                                                                    shortLink
-                                                                );
-                                                            }}
-                                                        >
-                                                            Copy
-                                                        </button>
+                                                        {views}
+                                                    </td>
+                                                    <td className="border-t px-3 pt-2 pb-2">
+                                                        {views
+                                                            ? lastUpdate
+                                                            : ""}
                                                     </td>
                                                 </tr>
                                             );

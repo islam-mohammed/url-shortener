@@ -15,7 +15,7 @@ class ShortLinksCollection extends ResourceCollection
     public function toArray($request)
     {
         return $this->collection->map->only(
-            'id', 'destination', 'slug', 'shortLink', 'updated_at'
+            'id', 'destination', 'slug', 'shortLink', 'views', 'lastUpdate'
         );
     }
 }
