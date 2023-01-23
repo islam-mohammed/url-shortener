@@ -25,7 +25,7 @@ class ShortLinkController extends Controller
             'shortLinks' => new ShortLinksCollection(
                 Auth::user()->shortLinks()
                             ->latest()
-                            ->paginate()
+                            ->paginate(10)
                             ->appends(request()->all()))
         ]);
     }
@@ -44,7 +44,7 @@ class ShortLinkController extends Controller
             // save the short link
             $shortlink->save();
             // redirect the user to the original link
-            return Redirect($shortlink->destination);
+            return Inertia::location($shortlink->destination);
         }
 
         report(new NotFoundHttpException('This link in not valid'));
