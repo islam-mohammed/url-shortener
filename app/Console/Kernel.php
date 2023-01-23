@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Create a scheduled task that deletes links that were not visited for the past 30 days
+        $schedule->command('shoutlinks:cleanup')->daily();
     }
 
     /**
