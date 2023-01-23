@@ -1,13 +1,20 @@
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import LoadingButton from "@/Components/LoadingButton";
 import NavLink from "@/Components/NavLink";
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import { useEffect, useRef, useState } from "react";
+import { Head, useForm } from "@inertiajs/react";
 
-export default function ShortLinks({ auth, errors, shortLinks }) {
+export default function ShortLinks({ shortLinks, auth, destination }) {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        destination: "",
+        user_id: auth.user.id,
+    });
+
     const {
-        data,
+        data: linksData,
         meta: { links },
     } = shortLinks;
 
@@ -15,8 +22,18 @@ export default function ShortLinks({ auth, errors, shortLinks }) {
         if ("clipboard" in navigator) {
             return await navigator.clipboard.writeText(text);
         } else {
-            console.log("second");
             return document.execCommand("copy", true, text);
+        }
+    };
+
+    const onHandleChange = (event) => {
+        setData(event.target.name, event.target.value);
+    };
+    const submit = async (e) => {
+        e.preventDefault();
+        await post(route("shortlink.store"));
+        if (!errors?.destination) {
+            reset("destination");
         }
     };
     return (
@@ -34,15 +51,34 @@ export default function ShortLinks({ auth, errors, shortLinks }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-1 md:p-4">
-                        <div className="flex items-center ml-2 mb-6">
-                            <TextInput className="w-64 md:w-96 whitespace-nowrap " />
-                            <button
-                                type="button"
-                                className="bg-black text-white ml-1 py-2 px-6 rounded-md"
+                        <form
+                            className="flex items-top ml-2 mb-6"
+                            onSubmit={submit}
+                        >
+                            <div>
+                                <TextInput
+                                    id="destination"
+                                    placeholder="Add your link: http://example.com"
+                                    className="w-64 md:w-96 whitespace-nowrap"
+                                    name="destination"
+                                    value={data.destination}
+                                    handleChange={onHandleChange}
+                                    required
+                                />
+                                <InputError
+                                    message={errors.destination}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <LoadingButton
+                                loading={processing}
+                                type="submit"
+                                className="bg-black text-white ml-1 py-2 px-6 rounded-md max-h-10"
                             >
                                 Create
-                            </button>
-                        </div>
+                            </LoadingButton>
+                        </form>
+
                         <div className="overflow-x-auto bg-white rounded shadow">
                             <table className="w-full whitespace-nowrap">
                                 <thead>
@@ -55,7 +91,7 @@ export default function ShortLinks({ auth, errors, shortLinks }) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.map(
+                                    {linksData.map(
                                         ({
                                             id,
                                             destination,
