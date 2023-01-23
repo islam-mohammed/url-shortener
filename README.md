@@ -31,8 +31,11 @@ cp .env.example .env
 # Copy the example .env.test file
 cp .env.example .env.testing
 
-# Generate application key
+# Generate application key for local environment
 php artisan key:generate
+
+# Generate application key for testing environment
+php artisan key:generate --env=testing
 
 # Install composer dependencies
 composer install
