@@ -1,5 +1,6 @@
 import React from "react";
 import cx from "classnames";
+import styles from "../../css/components/LoadingButton.module.css"; // Import css modules stylesheet as styles
 
 export default ({ loading, className, children, ...props }) => {
     const classNames = cx(
@@ -12,7 +13,7 @@ export default ({ loading, className, children, ...props }) => {
     );
     return (
         <button disabled={loading} className={classNames} {...props}>
-            {loading && <div className="mr-2 btn-spinner" />}
+            {loading && <div className={`mr-2 ${styles.btnSpinner}`} />}
             {children}
         </button>
     );
