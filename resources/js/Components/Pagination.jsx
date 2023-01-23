@@ -19,8 +19,7 @@ const PageLink = ({ active, label, url }) => {
     );
     return (
         <Link className={className} href={url}>
-            <span dangerouslySetInnerHTML={{ __html: label }}></span>flex
-            items-center px-6 py-4 focus:text-indigo-500
+            <span dangerouslySetInnerHTML={{ __html: label }}></span>
         </Link>
     );
 };
