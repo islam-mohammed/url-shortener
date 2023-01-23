@@ -9,16 +9,18 @@ const PageLink = ({ active, label, url }) => {
             "px-4 py-3",
             "border border-solid border-gray-300 rounded",
             "text-sm",
-            "hover:bg-white",
-            "focus:outline-none focus:border-indigo-700 focus:text-indigo-700",
+            "hover:bg-black",
+            "hover:text-white",
+            "focus:outline-none",
         ],
         {
-            "bg-white": active,
+            "bg-black text-white": active,
         }
     );
     return (
         <Link className={className} href={url}>
-            <span dangerouslySetInnerHTML={{ __html: label }}></span>
+            <span dangerouslySetInnerHTML={{ __html: label }}></span>flex
+            items-center px-6 py-4 focus:text-indigo-500
         </Link>
     );
 };
