@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShortLinkRequest;
+use App\Http\Resources\ShortLinkResource;
 use App\Http\Resources\ShortLinksCollection;
 use App\Models\ShortLink;
 use Illuminate\Http\Request;
@@ -62,6 +63,24 @@ class ShortLinkController extends Controller
     {
         ShortLink::create($request->all());
         return to_route('shortlink.index');
+
+    }
+
+    public function findByDestination(Request $request) {
+        $headers = ['Content-Type' => 'application/json'];
+        // Check if there is a destination input is exist in the request and if this destination has a URL
+        if ($request->has('destination') && $request->destination != null) {
+            $link = ShortLink::where('destination', $request->destination)->first();
+            if($link) {
+                // if the destination is exist then return the respose
+                return new ShortLinkResource($link);
+            } else {
+                // if the destination doesn't exist then return an error message with the status code not found(404)
+                 return response(json_encode(["message" => "The destination dose not exist!"]), 404, $headers);
+            }
+        }
+         // if the destination input does not exist in the request or the input is null then return the status code bad request(400)
+         return response(json_encode(["message" => "The request body dosen't have the destination!"]), 400, $headers);
 
     }
 }
