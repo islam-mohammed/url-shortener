@@ -65,6 +65,14 @@ class ShortLinkController extends Controller
         return to_route('shortlink.index');
 
     }
+    public function update(ShortLinkRequest $request, $id)
+    {
+
+    }
+    public function destroy(ShortLink $shortlink)
+    {
+        $shortlink->delete();
+    }
 
     public function findByDestination(Request $request) {
         $headers = ['Content-Type' => 'application/json'];
